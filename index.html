@@ -9,6 +9,8 @@
       rel="stylesheet"
       href="https://cdn.jsdelivr.net/npm/bulma@0.9.4/css/bulma.min.css"
     />
+    <script src="https://cdn.jsdelivr.net/npm/js-confetti@latest/dist/js-confetti.browser.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/moment.js/2.30.1/moment.min.js"></script>
     <style>
       main {
         min-height: 100vh;
@@ -41,38 +43,33 @@
     </main>
 
     <script>
-      // Set the date we're counting down to
-      const countDownDate = new Date('Sun, 26 Feb 2023 09:00:00 GMT').getTime();
+      const ARRIVAL_DATE = 'Sun, 26 Feb 2023 09:00:00 GMT';
+      const isAniversary = new Date().getMonth() === 1 && new Date().getDate() === 26;
 
-      function setCountdown() {
-        // Get today's date and time
-        const now = new Date().getTime();
+      const jsConfetti = new JSConfetti()
 
-        // Find the distance between now and the count down date
-        const distance = countDownDate - now;
+      function timeAgo() {
+        const now = moment();
+        const arrival = moment(ARRIVAL_DATE);
+        const diff = now.diff(arrival);
+        const duration = moment.duration(diff);
+        const days = Math.floor(duration.asDays());
+        const hours = duration.hours();
+        const minutes = duration.minutes();
+        const seconds = duration.seconds();
+        const time = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
+        document.getElementById('time').textContent = time;
 
-        // Time calculations for days, hours, minutes and seconds
-        const days = Math.floor(distance / (1000 * 60 * 60 * 24));
-        const hours = Math.floor(
-          (distance % (1000 * 60 * 60 * 24)) / (1000 * 60 * 60)
-        );
-        const minutes = Math.floor((distance % (1000 * 60 * 60)) / (1000 * 60));
-        const seconds = Math.floor((distance % (1000 * 60)) / 1000);
-
-        // Display the result in the element with id="demo"
-        document.getElementById('time').innerHTML =
-          days + 'd ' + hours + 'h ' + minutes + 'm ' + seconds + 's ';
-
-        // If the count down is finished, write some text
-        if (distance < 0) {
-          clearInterval(intervalId);
-          document.getElementById('time').innerHTML = 'Travel 🛫 ... 🇲🇽';
+        if (isAniversary) {
+          const second = new Date().getSeconds();
+          if (second % 2 === 0) {
+            jsConfetti.addConfetti()
+          }
         }
       }
 
-      setCountdown();
       // Update the count down every 1 second
-      const intervalId = setInterval(setCountdown, 1000);
+      const intervalId = setInterval(timeAgo, 1000);
     </script>
   </body>
 </html>
