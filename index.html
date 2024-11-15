@@ -57,7 +57,7 @@
       function timeAgo() {
         const now = moment();
         const arrival = moment(ARRIVAL_DATE);
-        const diff = now.diff(arrival);
+        const diff = arrival.diff(now);
         const duration = moment.duration(diff);
         const days = Math.floor(duration.asDays());
         const hours = duration.hours();
