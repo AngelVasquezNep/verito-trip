@@ -43,10 +43,16 @@
     </main>
 
     <script>
-      const ARRIVAL_DATE = 'Thu Dec 05 2024 09:00:00 GMT';
-      const isAniversary = new Date().getMonth() === 1 && new Date().getDate() === 26;
+      const ARRIVAL_DATE = '2024-11-23T09:25:00-06:00';
 
-      const jsConfetti = new JSConfetti()
+      // Function to check if today is the anniversary
+      function checkAnniversary() {
+        const now = moment();
+        const arrival = moment(ARRIVAL_DATE);
+        return now.month() === arrival.month() && now.date() === arrival.date();
+      }
+
+      const jsConfetti = new JSConfetti();
 
       function timeAgo() {
         const now = moment();
@@ -60,16 +66,17 @@
         const time = `${days} days, ${hours} hours, ${minutes} minutes, and ${seconds} seconds`;
         document.getElementById('time').textContent = time;
 
-        if (isAniversary) {
+        // Check if today is the anniversary and add confetti
+        if (checkAnniversary()) {
           const second = new Date().getSeconds();
           if (second % 2 === 0) {
-            jsConfetti.addConfetti()
+            jsConfetti.addConfetti();
           }
         }
       }
 
-      // Update the count down every 1 second
-      const intervalId = setInterval(timeAgo, 1000);
+      // Update the countdown every 1 second
+      setInterval(timeAgo, 1000);
     </script>
   </body>
 </html>
